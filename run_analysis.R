@@ -48,9 +48,10 @@ subject <- subject$V1
 dat <- cbind(subject, dat)
 
 ## Selecting measurements on mean and standard deviation
-sel <- grepl("\\mean|std", feature.names)
+sel <- grepl("\\mean\\()|std\\()", feature.names)
 sel <- feature.names[sel]
 dat <- dat[,c("subject", "activity", sel)]
+names(dat) <- gsub("\\()", "", names(dat))
 
 # install.packages("stringr")
 library(stringr)
@@ -70,7 +71,7 @@ new_dat <- cbind(groups, new_dat)
 new_dat <- new_dat[,-3]
 
 ## Renaming the columns to reflect their actual purpose
-new_dat <- rename(new_dat, c("activity"="1", "subject"="2"))
+new_dat <- rename(new_dat, c("1" = "activity", "2"="subject"))
 
 ## Writing the file into a table
 write.table(new_dat, file="./tidy_data.txt", row.names = FALSE)
